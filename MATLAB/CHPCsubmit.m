@@ -36,7 +36,7 @@ end
 
 % setup
 mkdirquiet('~/sgeoutput');
-
+mkdirquiet('~/mcc');
 %%%%% ensure uniqueness
 
 if exist(sprintf('~/mcc/job_%s.mat',jobname),'file')

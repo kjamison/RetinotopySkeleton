@@ -39,6 +39,13 @@ try
     debugmode = 0;
   end
 
+  if ~exist('results_directory','var') || isempty(results_directory)
+      results_directory = 'results';
+  end
+  if ~exist('dummycifti','var') || isempty(dummycifti)
+        dummycifti = '~/dummy.dtseries.nii';   % dummy CIFTI file
+  end
+
   %%%%% SETUP
   
   % internal constants
@@ -48,7 +55,7 @@ try
   tr = 1;                % seconds
   stimres = 200;         % number of pixels along each dimension of the stimulus
   maxiter = 100;         % maximum number of iterations
-  dummycifti = '~/dummy.dtseries.nii';   % dummy CIFTI file
+  %dummycifti = '~/dummy.dtseries.nii';   % dummy CIFTI file
 
   % calc
   stimdeg = atan(widthofstim/2/viewingdistance)/pi*180*2;  % stimulus diameter in degrees 
@@ -190,16 +197,16 @@ try
   %%%%% MASSAGE THE OUTPUTS AND WRITE TO DISK
 
   % make the output directory
-  mkdirquiet('results');
+  mkdirquiet(results_directory);
 
   % write out results
-  writecifti(results.ang,                               sprintf('results/%d_angle.dtseries.nii',subject));
-  writecifti(results.ecc*pxtodeg,                       sprintf('results/%d_eccentricity.dtseries.nii',subject));
-  writecifti(results.rfsize*pxtodeg,                    sprintf('results/%d_size.dtseries.nii',subject));
-  writecifti(results.expt,                              sprintf('results/%d_exponent.dtseries.nii',subject));
-  writecifti(results.gain./results.meanvol*100,         sprintf('results/%d_gain.dtseries.nii',subject));
-  writecifti(results.R2,                                sprintf('results/%d_varianceexplained.dtseries.nii',subject));
-  writecifti(results.meanvol,                           sprintf('results/%d_mean.dtseries.nii',subject));
+  writecifti(results.ang,                               sprintf('%s/%s_angle.dtseries.nii',results_directory,subject));
+  writecifti(results.ecc*pxtodeg,                       sprintf('%s/%s_eccentricity.dtseries.nii',results_directory,subject));
+  writecifti(results.rfsize*pxtodeg,                    sprintf('%s/%s_size.dtseries.nii',results_directory,subject));
+  writecifti(results.expt,                              sprintf('%s/%s_exponent.dtseries.nii',results_directory,subject));
+  writecifti(results.gain./results.meanvol*100,         sprintf('%s/%s_gain.dtseries.nii',results_directory,subject));
+  writecifti(results.R2,                                sprintf('%s/%s_varianceexplained.dtseries.nii',results_directory,subject));
+  writecifti(results.meanvol,                           sprintf('%s/%s_mean.dtseries.nii',results_directory,subject));
 
 catch me
 
@@ -212,4 +219,4 @@ end
 
 % make sure we get out
 fprintf('RetinotopyAnalysis.m complete.\n');
-quit;
+%quit;
